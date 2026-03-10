@@ -1,4 +1,4 @@
-const API_URL = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
+const API_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
 
 export async function getLatestCryptos(limit = 10) {
   const res = await fetch(`${API_URL}?limit=${limit}`, {
