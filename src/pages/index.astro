@@ -1,11 +1,32 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { getLatestCryptos } from "../lib/coinmarketcap";
+import CryptoRow from "../components/CryptoRow.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const cryptos = await getLatestCryptos(10);
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html>
+  <body>
+
+    <h1>Crypto Dashboard</h1>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Crypto</th>
+          <th>Price USD</th>
+          <th>24h %</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {cryptos.map((crypto: any) => (
+          <CryptoRow crypto={crypto} />
+        ))}
+      </tbody>
+
+    </table>
+
+  </body>
+</html>

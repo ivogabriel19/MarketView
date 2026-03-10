@@ -1,0 +1,13 @@
+---
+const { crypto } = Astro.props;
+
+const price = crypto.quote.USD.price.toFixed(2);
+const change = crypto.quote.USD.percent_change_24h.toFixed(2);
+---
+
+<tr>
+  <td>{crypto.cmc_rank}</td>
+  <td>{crypto.name} ({crypto.symbol})</td>
+  <td>${price}</td>
+  <td>{change}%</td>
+</tr>
