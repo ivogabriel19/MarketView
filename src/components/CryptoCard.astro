@@ -1,4 +1,6 @@
 ---
+import { getCryptoLogo } from "../lib/coinmarketcap";
+
 const { crypto } = Astro.props;
 
 const price = crypto.quote.USD.price;
@@ -13,47 +15,68 @@ const priceFormatted = price.toLocaleString("en-US", {
 const changeFormatted = change.toFixed(2);
 
 const color = change >= 0 ? "green" : "red";
+
+const logo = getCryptoLogo(crypto.id);
 ---
 
 <div class="card">
-  <div class="rank">#{crypto.cmc_rank}</div>
 
-  <div class="name">{crypto.name}</div>
-  <div class="symbol">{crypto.symbol}</div>
+  <div class="header">
+    <img src={logo} alt={crypto.symbol} />
+
+    <div>
+      <div class="name">{crypto.name}</div>
+      <div class="symbol">{crypto.symbol}</div>
+    </div>
+  </div>
+
+  <div class="rank">#{crypto.cmc_rank}</div>
 
   <div class="price">{priceFormatted}</div>
 
   <div class="change" style={`color:${color}`}>
     {changeFormatted}%
   </div>
+
 </div>
 
 <style>
 .card {
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 16px;
   background: white;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+img {
+  width: 32px;
+  height: 32px;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.symbol {
+  font-size: 13px;
+  color: gray;
 }
 
 .rank {
   font-size: 12px;
   color: gray;
-}
-
-.name {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.symbol {
-  color: gray;
-  font-size: 14px;
+  margin-top: 4px;
 }
 
 .price {
   font-size: 20px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .change {

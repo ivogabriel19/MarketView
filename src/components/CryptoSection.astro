@@ -1,0 +1,31 @@
+---
+import CryptoCard from "./CryptoCard.astro";
+
+const { title, cryptos } = Astro.props;
+---
+
+<section>
+  <h2>{title}</h2>
+
+  <div class="grid">
+    {cryptos.map((crypto: any) => (
+      <CryptoCard crypto={crypto} />
+    ))}
+  </div>
+</section>
+
+<style>
+section {
+  margin-bottom: 40px;
+}
+
+h2 {
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+</style>

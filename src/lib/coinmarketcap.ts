@@ -1,11 +1,14 @@
 const API_URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
 
-export async function getLatestCryptos(limit = 10) {
-  const res = await fetch(`${API_URL}?limit=${limit}`, {
-    headers: {
-      "X-CMC_PRO_API_KEY": import.meta.env.CMC_API_KEY,
-    },
-  });
+export async function getLatestCryptos(limit = 50) {
+  const res = await fetch(
+    `${API_URL}?start=1&limit=${limit}&sort=market_cap&convert=USD`,
+    {
+      headers: {
+        "X-CMC_PRO_API_KEY": import.meta.env.CMC_API_KEY,
+      },
+    }
+  );
 
   if (!res.ok) {
     throw new Error("CoinMarketCap API error");
@@ -14,4 +17,8 @@ export async function getLatestCryptos(limit = 10) {
   const json = await res.json();
 
   return json.data;
+}
+
+export function getCryptoLogo(id: number) {
+  return `https://s2.coinmarketcap.com/static/img/coins/64x64/${id}.png`;
 }
