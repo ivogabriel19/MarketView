@@ -1,0 +1,62 @@
+---
+const { crypto } = Astro.props;
+
+const price = crypto.quote.USD.price;
+const change = crypto.quote.USD.percent_change_24h;
+
+const priceFormatted = price.toLocaleString("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 2
+});
+
+const changeFormatted = change.toFixed(2);
+
+const color = change >= 0 ? "green" : "red";
+---
+
+<div class="card">
+  <div class="rank">#{crypto.cmc_rank}</div>
+
+  <div class="name">{crypto.name}</div>
+  <div class="symbol">{crypto.symbol}</div>
+
+  <div class="price">{priceFormatted}</div>
+
+  <div class="change" style={`color:${color}`}>
+    {changeFormatted}%
+  </div>
+</div>
+
+<style>
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  background: white;
+}
+
+.rank {
+  font-size: 12px;
+  color: gray;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.symbol {
+  color: gray;
+  font-size: 14px;
+}
+
+.price {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.change {
+  font-weight: bold;
+}
+</style>
