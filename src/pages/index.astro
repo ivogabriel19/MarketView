@@ -1,39 +1,13 @@
 ---
-import { getLatestCryptos } from "../lib/coinmarketcap";
-import {
-  getTopMarketCap,
-  getTopGainers,
-  getTopLosers
-} from "../lib/cryptoUtils";
+import LiveDashboard from "../components/LiveDashboard.tsx"
 
-import CryptoSection from "../components/CryptoSection.astro";
-
-const cryptos = await getLatestCryptos(50);
-
-const topMarketCap = getTopMarketCap(cryptos, 6);
-const topGainers = getTopGainers(cryptos, 6);
-const topLosers = getTopLosers(cryptos, 6);
 ---
-
 <html>
   <body>
 
     <h1>Crypto Dashboard</h1>
 
-    <CryptoSection
-      title="Top Market Cap"
-      cryptos={topMarketCap}
-    />
-
-    <CryptoSection
-      title="Top Gainers (24h)"
-      cryptos={topGainers}
-    />
-
-    <CryptoSection
-      title="Top Losers (24h)"
-      cryptos={topLosers}
-    />
+    <LiveDashboard client:load />
 
   </body>
 </html>
