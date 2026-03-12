@@ -1,20 +1,27 @@
 ---
 import LiveMarketIsland from "../components/LiveMarketIsland";
+import ExtendedCarousel from "../components/ExtendedCarousel";
 
-export const prerender = false
+export const prerender = false;
 
-const res = await fetch(new URL("/api/cryptos", Astro.url))
+const res = await fetch(new URL("/api/cryptos", Astro.url));
 //const res = await fetch("/api/cryptos");
 const cryptos = await res.json();
-
 ---
 
 <html>
   <body>
-    <h1>Crypto Dashboard</h1>
-    <div class="grid">
-      <LiveMarketIsland client:idle initial={cryptos} />
-    </div>
+    <section>
+      <h1>Crypto Dashboard</h1>
+      <div class="grid">
+        <LiveMarketIsland client:idle initial={cryptos} />
+      </div>
+    </section>
+
+    <section style="margin-top:40px">
+      <h2>Coin Insights</h2>
+      <ExtendedCarousel client:load cryptos={cryptos} />
+    </section>
   </body>
 </html>
 

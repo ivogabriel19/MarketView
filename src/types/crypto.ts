@@ -6,13 +6,21 @@ export interface CryptoQuote {
 
 export interface Crypto {
   id: string
-  name: string
   symbol: string
-  price: number
-  change24hNt: number
-  change24hPr: number
-  sparkline: number[]
+  name: string
   image: string
+
+  current_price: number
+  market_cap: number
+  total_volume: number
+
+  price_change_percentage_24h: number
+
+  circulating_supply: number
+
+  sparkline_in_7d: {
+    price: number[]
+  }
 }
 
 export interface CoinMarketCapResponse {

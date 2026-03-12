@@ -2,6 +2,8 @@
   background-color: rgba(200, 200, 200, 0.5);
   padding: .5rem;
   border-radius: .2rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header{
@@ -27,8 +29,6 @@
 .price{
   font-size: 1.2rem;
   font-weight: bold;
-  position: absolute;
-  right: 0px;
 }
 
 .numbers > *{

@@ -1,4 +1,3 @@
-import Sparkline from "./Sparkline";
 import type { Crypto } from "../types/crypto";
 import "./CryptoCard.css";
 import { useEffect, useState } from "react";
@@ -8,33 +7,34 @@ interface Props {
 }
 
 export default function CryptoCard({ crypto }: Props) {
-  const [prevPrice, setPrevPrice] = useState(crypto.price);
-  const [flash, setFlash] = useState("");
+  const [prevPrice, setPrevPrice] = useState<number>(crypto.current_price);
+  const [flash, setFlash] = useState<string>("");
 
   useEffect(() => {
-    if (crypto.price > prevPrice) {
+    if (crypto.current_price > prevPrice) {
       setFlash("flash-green");
     }
 
-    if (crypto.price < prevPrice) {
+    if (crypto.current_price < prevPrice) {
       setFlash("flash-red");
     }
 
-    setPrevPrice(crypto.price);
+    setPrevPrice(crypto.current_price);
 
     const t = setTimeout(() => setFlash(""), 500);
 
     return () => clearTimeout(t);
-  }, [crypto.price]);
+  }, [crypto.current_price, prevPrice]);
 
-  const price = crypto.price.toLocaleString("en-US", {
+  const price: string = crypto.current_price.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
 
-  const changePr = crypto.change24hPr.toFixed(2);
-  const changeNt = crypto.change24hNt.toFixed(2);
-  const color = crypto.change24hPr >= 0 ? "green" : "red";
+  const changePr: string = crypto.price_change_percentage_24h.toFixed(2);
+
+  const color: string =
+    crypto.price_change_percentage_24h >= 0 ? "green" : "red";
 
   return (
     <div className="card">
@@ -43,25 +43,15 @@ export default function CryptoCard({ crypto }: Props) {
 
         <div>
           <div>{crypto.name}</div>
-          <div>{crypto.symbol}</div>
+          <div>{crypto.symbol.toUpperCase()}</div>
         </div>
-        
-        <div className={`price ${flash}`}>{price}</div>
       </div>
 
-      <div className="card-data">
         <div className="numbers">
-          {/* <div>{price}</div> */}
-          <div style={{ color }}>{changePr}%</div>
-          <div style={{ color }}>{changeNt} u$d</div>
-        </div>
+          <div className={`price ${flash}`}>{price}</div>
 
-        {crypto.sparkline.length > 0 && (
-          <div style={{ height: "60px" }}>
-            <Sparkline prices={crypto.sparkline} change={crypto.change24hPr} />
-          </div>
-        )}
-      </div>
+          <div style={{ color, textAlign: "right" }}>{changePr}%</div>
+        </div>
     </div>
   );
 }
