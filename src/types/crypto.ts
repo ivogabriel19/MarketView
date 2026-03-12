@@ -5,13 +5,14 @@ export interface CryptoQuote {
 }
 
 export interface Crypto {
-  id: number
+  id: string
   name: string
   symbol: string
-  cmc_rank: number
-  quote: {
-    USD: CryptoQuote
-  }
+  price: number
+  change24hNt: number
+  change24hPr: number
+  sparkline: number[]
+  image: string
 }
 
 export interface CoinMarketCapResponse {

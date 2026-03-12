@@ -1,54 +1,48 @@
-import { useSparkline } from "../hooks/useSparkline"
-import Sparkline from "./Sparkline"
-import type { Crypto } from "../types/crypto"
+import Sparkline from "./Sparkline";
+import type { Crypto } from "../types/crypto";
+import "./CryptoCard.css"
 
 interface Props {
-  crypto: Crypto
+  crypto: Crypto;
 }
 
 export default function CryptoCard({ crypto }: Props) {
-
-  const prices = useSparkline(crypto.id)
-
-  const price = crypto.quote.USD.price.toLocaleString("en-US", {
+  const price = crypto.price.toLocaleString("en-US", {
     style: "currency",
-    currency: "USD"
-  })
+    currency: "USD",
+  });
 
-  const change = crypto.quote.USD.percent_change_24h.toFixed(2)
-
-  const color =
-    crypto.quote.USD.percent_change_24h >= 0 ? "green" : "red"
+  const changePr = crypto.change24hPr.toFixed(2);
+  const changeNt = crypto.change24hNt.toFixed(2);
+  const color = crypto.change24hPr >= 0 ? "green" : "red";
 
   return (
-
     <div className="card">
-
       <div className="header">
-
-        <img
-          src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${crypto.id}.png`}
-        />
+        <img src={crypto.image} alt={crypto.name} width="24" height="24" />
 
         <div>
           <div>{crypto.name}</div>
           <div>{crypto.symbol}</div>
         </div>
 
+        <div className="price" >{price}</div>
       </div>
 
-      <div>{price}</div>
-
-      <div style={{ color }}>
-        {change}%
-      </div>
-
-      {prices.length > 0 && (
-        <div style={{ height: "60px" }}>
-          <Sparkline prices={prices} />
+      <div className="card-data">
+        <div className="numbers">
+          {/* <div>{price}</div> */}
+          <div style={{ color }}>{changePr}%</div>
+          <div style={{ color }}>{changeNt} u$d</div>
         </div>
-      )}
+
+        {crypto.sparkline.length > 0 && (
+          <div style={{ height: "60px" }}>
+            <Sparkline prices={crypto.sparkline} />
+          </div>
+        )}
+      </div>
 
     </div>
-  )
+  );
 }

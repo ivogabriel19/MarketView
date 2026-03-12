@@ -1,0 +1,36 @@
+.card{
+  background-color: rgba(200, 200, 200, 0.5);
+  padding: .5rem;
+  border-radius: .2rem;
+}
+
+.header{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.card-data{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+.price{
+  font-size: 1.2rem;
+  font-weight: bold;
+  position: absolute;
+  right: 0px;
+}
+
+.numbers > *{
+  margin-block: .5rem;
+}

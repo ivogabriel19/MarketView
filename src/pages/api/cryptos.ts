@@ -1,42 +1,30 @@
 import type { APIRoute } from "astro"
-import { getLatestCryptos } from "../../lib/coinmarketcap"
-import type { Crypto } from "../../types/crypto"
 
-let cache: Crypto[] | null = null
-let lastFetch = 0
-
-const CACHE_TIME = 60 * 1000 
+export const prerender = false
 
 export const GET: APIRoute = async () => {
 
-  const now = Date.now()
-
-  if (cache && now - lastFetch < CACHE_TIME) {
-
-    return new Response(
-      JSON.stringify(cache),
-      {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }
-    )
-
-  }
-
-  const cryptos = await getLatestCryptos(50)
-
-  cache = cryptos
-  lastFetch = now
-
-  return new Response(
-    JSON.stringify(cryptos),
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=60"
-      }
-    }
+  const res = await fetch(
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true"
   )
 
+  const data = await res.json()
+
+  const cryptos = data.map((c: any) => ({
+    id: c.id,
+    name: c.name,
+    symbol: c.symbol.toUpperCase(),
+    price: c.current_price,
+    change24hPr: c.price_change_percentage_24h,
+    change24hNt: c.price_change_24h,
+    sparkline: c.sparkline_in_7d.price,
+    image: c.image
+  }))
+
+  return new Response(JSON.stringify(cryptos), {
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "public, max-age=300"
+    }
+  })
 }
