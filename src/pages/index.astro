@@ -1,34 +1,51 @@
 ---
-import LiveMarketIsland from "../components/LiveMarketIsland";
-import ExtendedCarousel from "../components/ExtendedCarousel";
+import LiveMarketIsland from "../components/LiveMarketIsland"
+import ExtendedCarousel from "../components/ExtendedCarousel"
+import CryptoHeatmap from "../components/CryptoHeatmap"
+import MarketTicker from "../components/MarketTicker"
+import MoversPanel from "../components/MoversPanel"
+import RankingTable from "../components/RankingTable"
+import MarketProviderIsland from "../components/MarketProviderIsland"
 
-export const prerender = false;
+export const prerender = false
 
-const res = await fetch(new URL("/api/cryptos", Astro.url));
-//const res = await fetch("/api/cryptos");
-const cryptos = await res.json();
+const res = await fetch(new URL("/api/cryptos", Astro.url))
+const cryptos = await res.json()
 ---
 
 <html>
   <body>
-    <section>
-      <h1>Crypto Dashboard</h1>
-      <div class="grid">
-        <LiveMarketIsland client:idle initial={cryptos} />
-      </div>
-    </section>
 
-    <section style="margin-top:40px">
-      <h2>Coin Insights</h2>
-      <ExtendedCarousel client:load cryptos={cryptos} />
-    </section>
+    <MarketProviderIsland client:load initialData={cryptos}>
+
+      <MarketTicker />
+
+      <section>
+        <h1>Crypto Dashboard</h1>
+        <div class="grid">
+          <LiveMarketIsland />
+        </div>
+      </section>
+
+      <section>
+        <MoversPanel />
+      </section>
+
+      <section>
+        <RankingTable />
+      </section>
+
+      <section style="margin-top:40px">
+        <h2>Coin Insights</h2>
+        <ExtendedCarousel />
+      </section>
+
+      <section>
+        <h2>Market Heatmap</h2>
+        <CryptoHeatmap />
+      </section>
+
+    </MarketProviderIsland>
+
   </body>
 </html>
-
-<style>
-  body {
-    font-family: system-ui;
-    background: #f5f5f5;
-    padding: 40px;
-  }
-</style>

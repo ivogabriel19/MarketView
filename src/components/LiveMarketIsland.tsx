@@ -2,24 +2,13 @@ import { useEffect, useState } from "react"
 import CryptoCard from "./CryptoCard"
 import type { Crypto } from "../types/crypto"
 import "./LiveMarketIsland.css"
+import { useMarketData } from "../context/MarketDataContext"
 
-export default function LiveMarketIsland({ initial }: { initial: Crypto[] }) {
+export default function LiveMarketIsland() {
 
-  const [cryptos, setCryptos] = useState(initial)
+  const { cryptos } = useMarketData()
 
-  useEffect(() => {
-
-    const fetchData = () => {
-      fetch("/api/cryptos")
-        .then(r => r.json())
-        .then(setCryptos)
-    }
-
-    const interval = setInterval(fetchData, 30000)
-
-    return () => clearInterval(interval)
-
-  }, [])
+  if (!cryptos.length) return null
 
   return (
     <>

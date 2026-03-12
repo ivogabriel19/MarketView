@@ -18,6 +18,9 @@ export interface Crypto {
 
   circulating_supply: number
 
+  ath: number
+  ath_change_percentage: number
+
   sparkline_in_7d: {
     price: number[]
   }

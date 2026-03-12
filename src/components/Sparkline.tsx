@@ -1,51 +1,77 @@
+import { useEffect, useState } from "react"
 import { Line } from "react-chartjs-2"
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  LinearScale,
-  CategoryScale
-} from "chart.js"
-
-ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale)
+import type { ChartOptions } from "chart.js"
 
 interface Props {
-  prices: number[]
-  change: number
+  coinId: string
 }
 
-export default function Sparkline({ prices, change }: Props) {
+export default function Sparkline({ coinId }: Props) {
 
-  if (!prices || prices.length === 0) return null
+  const [prices, setPrices] =
+    useState<number[]>([])
 
-  
-  const color = change >= 0
-    ? "#16c784"   // verde
-    : "#ea3943"   // rojo
+  const [days, setDays] =
+    useState<"1" | "7" | "30">("7")
+
+  useEffect(() => {
+
+    fetch(`/api/sparkline/${coinId}?days=${days}`)
+      .then(r => r.json())
+      .then(setPrices)
+
+  }, [coinId, days])
 
   const data = {
     labels: prices.map((_, i) => i),
     datasets: [
       {
         data: prices,
-        borderColor: color,
+        borderColor: "#4ade80",
         borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.3
+        pointRadius: 0
       }
     ]
   }
 
-  const options = {
+  const options: ChartOptions<"line"> = {
+
     responsive: true,
+
     plugins: {
       legend: { display: false }
     },
+
     scales: {
       x: { display: false },
       y: { display: false }
     }
+
   }
 
-  return <Line data={data} options={options}/>
+  return (
+
+    <div>
+
+      <div style={{ marginBottom: "8px" }}>
+
+        <button onClick={() => setDays("1")}>
+          24h
+        </button>
+
+        <button onClick={() => setDays("7")}>
+          7d
+        </button>
+
+        <button onClick={() => setDays("30")}>
+          30d
+        </button>
+
+      </div>
+
+      <Line data={data} options={options}/>
+
+    </div>
+
+  )
 }
