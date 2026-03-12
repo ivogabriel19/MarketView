@@ -1,12 +1,32 @@
 import Sparkline from "./Sparkline";
 import type { Crypto } from "../types/crypto";
-import "./CryptoCard.css"
+import "./CryptoCard.css";
+import { useEffect, useState } from "react";
 
 interface Props {
   crypto: Crypto;
 }
 
 export default function CryptoCard({ crypto }: Props) {
+  const [prevPrice, setPrevPrice] = useState(crypto.price);
+  const [flash, setFlash] = useState("");
+
+  useEffect(() => {
+    if (crypto.price > prevPrice) {
+      setFlash("flash-green");
+    }
+
+    if (crypto.price < prevPrice) {
+      setFlash("flash-red");
+    }
+
+    setPrevPrice(crypto.price);
+
+    const t = setTimeout(() => setFlash(""), 500);
+
+    return () => clearTimeout(t);
+  }, [crypto.price]);
+
   const price = crypto.price.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
@@ -25,8 +45,8 @@ export default function CryptoCard({ crypto }: Props) {
           <div>{crypto.name}</div>
           <div>{crypto.symbol}</div>
         </div>
-
-        <div className="price" >{price}</div>
+        
+        <div className={`price ${flash}`}>{price}</div>
       </div>
 
       <div className="card-data">
@@ -38,11 +58,10 @@ export default function CryptoCard({ crypto }: Props) {
 
         {crypto.sparkline.length > 0 && (
           <div style={{ height: "60px" }}>
-            <Sparkline prices={crypto.sparkline} />
+            <Sparkline prices={crypto.sparkline} change={crypto.change24hPr} />
           </div>
         )}
       </div>
-
     </div>
   );
 }

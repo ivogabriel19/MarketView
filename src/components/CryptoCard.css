@@ -34,3 +34,11 @@
 .numbers > *{
   margin-block: .5rem;
 }
+
+.flash-green {
+  color: #16c784;
+}
+
+.flash-red {
+  color: #ea3943;
+}

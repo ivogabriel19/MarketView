@@ -11,18 +11,27 @@ ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale)
 
 interface Props {
   prices: number[]
+  change: number
 }
 
-export default function Sparkline({ prices }: Props) {
+export default function Sparkline({ prices, change }: Props) {
+
+  if (!prices || prices.length === 0) return null
+
+  
+  const color = change >= 0
+    ? "#16c784"   // verde
+    : "#ea3943"   // rojo
 
   const data = {
     labels: prices.map((_, i) => i),
     datasets: [
       {
         data: prices,
-        borderColor: "#4ade80",
+        borderColor: color,
         borderWidth: 2,
-        pointRadius: 0
+        pointRadius: 0,
+        tension: 0.3
       }
     ]
   }
