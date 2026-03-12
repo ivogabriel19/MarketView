@@ -1,12 +1,20 @@
 ---
-import LiveDashboard from "../components/LiveDashboard.tsx";
+import LiveMarketIsland from "../components/LiveMarketIsland";
+
+export const prerender = false
+
+const res = await fetch(new URL("/api/cryptos", Astro.url))
+//const res = await fetch("/api/cryptos");
+const cryptos = await res.json();
+
 ---
 
 <html>
   <body>
     <h1>Crypto Dashboard</h1>
-
-    <LiveDashboard client:load />
+    <div class="grid">
+      <LiveMarketIsland client:idle initial={cryptos} />
+    </div>
   </body>
 </html>
 
