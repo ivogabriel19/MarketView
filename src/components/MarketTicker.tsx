@@ -50,7 +50,7 @@ export default function MarketTicker() {
           const color = change >= 0 ? "#22c55e" : "#ef4444";
 
           return (
-            <div key={Math.random()}>
+            <div key={c.id}>
               {c.symbol.toUpperCase()} ${c.current_price}
               <span style={{ color }}> {change.toFixed(2)}%</span>
             </div>

@@ -1,51 +1,10 @@
 ---
-import LiveMarketIsland from "../components/LiveMarketIsland"
-import ExtendedCarousel from "../components/ExtendedCarousel"
-import CryptoHeatmap from "../components/CryptoHeatmap"
-import MarketTicker from "../components/MarketTicker"
-import MoversPanel from "../components/MoversPanel"
-import RankingTable from "../components/RankingTable"
-import MarketProviderIsland from "../components/MarketProviderIsland"
-
+import DashboardIsland from "../components/DashboardIsland"
 export const prerender = false
-
-const res = await fetch(new URL("/api/cryptos", Astro.url))
-const cryptos = await res.json()
 ---
 
 <html>
   <body>
-
-    <MarketProviderIsland client:load initialData={cryptos}>
-
-      <MarketTicker />
-
-      <section>
-        <h1>Crypto Dashboard</h1>
-        <div class="grid">
-          <LiveMarketIsland />
-        </div>
-      </section>
-
-      <section>
-        <MoversPanel />
-      </section>
-
-      <section>
-        <RankingTable />
-      </section>
-
-      <section style="margin-top:40px">
-        <h2>Coin Insights</h2>
-        <ExtendedCarousel />
-      </section>
-
-      <section>
-        <h2>Market Heatmap</h2>
-        <CryptoHeatmap />
-      </section>
-
-    </MarketProviderIsland>
-
+    <DashboardIsland client:load />
   </body>
 </html>

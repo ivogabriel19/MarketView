@@ -1,43 +1,47 @@
-import { createContext, useContext, useEffect, useState } from "react"
-import type { Crypto } from "../types/crypto"
+import { createContext, useContext, useEffect, useState } from "react";
+import type { Crypto } from "../types/crypto";
 
 interface MarketContextType {
-  cryptos: Crypto[]
-  loading: boolean
+  cryptos: Crypto[];
+  loading: boolean;
 }
 
 const MarketDataContext = createContext<MarketContextType>({
   cryptos: [],
-  loading: true
-})
+  loading: true,
+});
 
 export function MarketDataProvider({
-  children,
-  initialData
+  children
 }: {
   children: React.ReactNode
-  initialData?: Crypto[]
 }) {
 
-  const [cryptos, setCryptos] = useState<Crypto[]>(initialData ?? [])
-  const [loading, setLoading] = useState(initialData ? false : true)
+  const [cryptos, setCryptos] = useState<Crypto[]>([])
+  const [loading, setLoading] = useState(true)
 
   async function fetchMarket() {
     try {
+
       const res = await fetch("/api/cryptos")
-      const data: Crypto[] = await res.json()
+      const json = await res.json()
+
+      const data: Crypto[] = json.data ?? json
+
       setCryptos(data)
       setLoading(false)
+
+      console.log("market loaded", data.length)
+
     } catch (err) {
       console.error("Market fetch failed", err)
+      setLoading(false)
     }
   }
 
   useEffect(() => {
 
-    if (!initialData) {
-      fetchMarket()
-    }
+    fetchMarket()
 
     const interval = setInterval(fetchMarket, 30000)
 
@@ -53,5 +57,5 @@ export function MarketDataProvider({
 }
 
 export function useMarketData() {
-  return useContext(MarketDataContext)
+  return useContext(MarketDataContext);
 }
