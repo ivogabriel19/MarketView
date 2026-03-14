@@ -11,7 +11,6 @@ export default function ExtendedCarousel() {
 
   const { cryptos } = useMarketData()
 
-  if (!cryptos.length) return null
 
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -36,6 +35,8 @@ export default function ExtendedCarousel() {
     return () => clearInterval(interval)
 
   }, [])
+
+  if (!cryptos.length) return null
 
   return (
 

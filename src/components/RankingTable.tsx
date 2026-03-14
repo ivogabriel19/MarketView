@@ -15,7 +15,6 @@ export default function RankingTable() {
 
   const { cryptos } = useMarketData()
 
-  if (!cryptos.length) return null
 
   const [sortKey, setSortKey] =
     useState<SortKey>("market_cap")
@@ -28,6 +27,8 @@ export default function RankingTable() {
 
   }, [cryptos, sortKey])
 
+  if (!cryptos.length) return null
+  
   return (
 
     <div>
