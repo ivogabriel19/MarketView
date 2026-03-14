@@ -20,22 +20,27 @@ export default function DashboardIsland() {
       <section>
         <h1>Crypto Dashboard</h1>
         <LiveMarketIsland />
+        <hr />
       </section>
 
       <section>
         <MoversPanel />
+        <hr />
       </section>
 
       <section>
         <RankingTable />
+        <hr />
       </section>
 
       <section>
         <ExtendedCarousel />
+        <hr />
       </section>
 
       <section>
         <CryptoHeatmap />
+        <hr />
       </section>
 
     </MarketDataProvider>
