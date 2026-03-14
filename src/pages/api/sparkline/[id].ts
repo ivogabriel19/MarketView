@@ -6,10 +6,12 @@ export const GET: APIRoute = async ({ params }) => {
 
   const id = params.id
 
+  const days = params.days || "7"
+
   try {
 
     const res = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=7`
+      `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}`
     )
 
     const data = await res.json()

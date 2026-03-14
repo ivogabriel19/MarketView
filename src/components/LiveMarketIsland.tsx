@@ -12,9 +12,11 @@ export default function LiveMarketIsland() {
 
   return (
     <>
+    <div className="grid">
       {cryptos.map(c => (
         <CryptoCard key={c.id} crypto={c} />
       ))}
+    </div>
     </>
   )
 }

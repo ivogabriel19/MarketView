@@ -1,10 +1,18 @@
 ---
-import DashboardIsland from "../components/DashboardIsland"
-export const prerender = false
+import DashboardIsland from "../components/DashboardIsland";
+export const prerender = false;
 ---
 
 <html>
   <body>
     <DashboardIsland client:load />
+
+    <style>
+      body {
+        font-family: system-ui;
+        background: #f5f5f5;
+        padding: 40px;
+      }
+    </style>
   </body>
 </html>

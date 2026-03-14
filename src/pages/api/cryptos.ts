@@ -6,7 +6,7 @@ export const prerender = false
 export const GET: APIRoute = async () => {
 
   const res = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&price_change_percentage=24h&order=market_cap_desc&per_page=10&page=1"
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&price_change_percentage=24h&order=market_cap_desc&per_page=12&page=1"
   )
 
   const data: Crypto[] = await res.json()

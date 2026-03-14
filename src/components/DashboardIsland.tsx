@@ -13,7 +13,7 @@ export default function DashboardIsland() {
   return (
     <MarketDataProvider>
 
-      <TestMarket />
+      {/* <TestMarket /> */}
 
       <MarketTicker />
 
