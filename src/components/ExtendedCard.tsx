@@ -56,7 +56,7 @@ export default function ExtendedCard({ crypto }: Props) {
 
       </div>
 
-      <div style={{ height: "100px", marginTop: "16px" }}>
+      <div style={{ height: "200px", marginTop: "16px" }}>
         <Sparkline coinId={crypto.id}/>
       </div>
 

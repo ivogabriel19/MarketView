@@ -88,6 +88,7 @@ export default function Sparkline({ coinId }: Props) {
   const options: ChartOptions<"line"> = {
 
     responsive: true,
+    backgroundColor: "rgb(222, 222, 222)",
 
     plugins: {
       legend: { display: false }

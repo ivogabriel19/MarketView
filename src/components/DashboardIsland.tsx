@@ -24,17 +24,17 @@ export default function DashboardIsland() {
       </section>
 
       <section>
-        <MoversPanel />
+        <ExtendedCarousel />
         <hr />
+      </section>
+
+      <section>
+        {/* <MoversPanel /> */}
+        {/* <hr /> */}
       </section>
 
       <section>
         <RankingTable />
-        <hr />
-      </section>
-
-      <section>
-        <ExtendedCarousel />
         <hr />
       </section>
 

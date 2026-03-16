@@ -5,6 +5,34 @@ interface Props {
   cryptos: Crypto[]
 }
 
+function heatColor(change: number) {
+
+  const max = 10; // clamp del rango
+  const value = Math.max(-max, Math.min(max, change));
+
+  const intensity = Math.abs(value) / max;
+
+  if (value > 0) {
+
+    const green = Math.round(120 + 100 * intensity);
+    const alpha = 0.15 + intensity * 0.6;
+
+    return `rgba(34, ${green}, 94, ${alpha})`;
+
+  }
+
+  if (value < 0) {
+
+    const red = Math.round(180 + 60 * intensity);
+    const alpha = 0.15 + intensity * 0.6;
+
+    return `rgba(${red}, 30, 30, ${alpha})`;
+
+  }
+
+  return "rgba(0,0,0,0.05)";
+}
+
 export default function CryptoHeatmap() {
 
   const { cryptos } = useMarketData()
@@ -25,14 +53,9 @@ export default function CryptoHeatmap() {
 
       {cryptos.map(c => {
 
-        const size =
-          (c.market_cap / maxCap) * 100
-
-        const change =
-          c.price_change_percentage_24h
-
-        const color =
-          change >= 0 ? "#14532d" : "#7f1d1d"
+        const size = (c.market_cap / maxCap) * 100
+        const change = c.price_change_percentage_24h
+        const color = heatColor(change)
 
         return (
 
