@@ -9,26 +9,47 @@ const cryptos = await getLatestCryptos(50);
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
+		<link rel="icon" href="/dashboard.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Market viewer</title>
 	</head>
 	<body>
 		<header>
-			Market Viewr
-  	<MarketTicker cryptos={cryptos} client:load />
+			<div class="header-content">
+				<img src="/logo.png" alt="" />
+				<h1>Crypto Dashboard</h1>
+			</div>
 		</header>
+
+		<MarketTicker cryptos={cryptos} client:load />
 		
 		<slot />
 	</body>
 </html>
 
 <style>
-	html,
-	body {
+	html, body {
 		margin: 0;
-		width: 100%;
 		height: 100%;
+	}
+
+	header{
+		overflow: visible;
+		width: 100%;
+	}
+
+	.header-content {
+		display: flex;
+		align-items: center;
+		/* max-width: 1200px;
+		margin: 0 auto; */
+		padding: 8px 16px;
+
+		& > img {
+			width: 4rem;
+			height: 4rem;
+			margin-right: 1rem;
+		}
 	}
 </style>

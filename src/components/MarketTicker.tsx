@@ -102,7 +102,8 @@ export default function MarketTicker({ cryptos }: { cryptos: any[] }) {
         zIndex: 100,
         background: "#ffffff",
         borderBottom: "1px solid #ddd",
-        overflow: "hidden"
+        overflow: "hidden",
+        width: "100%"
       }}
     >
 
