@@ -1,66 +1,113 @@
 import { useState, useMemo } from "react"
-import type { Crypto } from "../types/crypto"
 import { useMarketData } from "../context/MarketDataContext"
+import type { Crypto } from "../types/crypto"
 
 type SortKey =
   | "market_cap"
   | "price_change_percentage_24h"
   | "total_volume"
 
-interface Props {
-  cryptos: Crypto[]
-}
+type SortDirection = "asc" | "desc"
 
 export default function RankingTable() {
 
   const { cryptos } = useMarketData()
 
-
   const [sortKey, setSortKey] =
     useState<SortKey>("market_cap")
 
+  const [direction, setDirection] =
+    useState<SortDirection>("desc")
+
+  const handleSort = (key: SortKey) => {
+
+    if (key === sortKey) {
+
+      setDirection(d =>
+        d === "desc" ? "asc" : "desc"
+      )
+
+    } else {
+
+      setSortKey(key)
+      setDirection("desc")
+
+    }
+
+  }
+
   const sorted = useMemo(() => {
 
-    return [...cryptos].sort((a, b) =>
-      b[sortKey] - a[sortKey]
+    const sortedData = [...cryptos].sort(
+      (a, b) => a[sortKey] - b[sortKey]
     )
 
-  }, [cryptos, sortKey])
+    return direction === "desc"
+      ? sortedData.reverse()
+      : sortedData
+
+  }, [cryptos, sortKey, direction])
 
   if (!cryptos.length) return null
-  
+
+  const arrow = (key: SortKey) => {
+    if (key !== sortKey) return ""
+    return direction === "desc" ? " ▼" : " ▲"
+  }
+
   return (
 
-    <div>
+    <div style={{ marginTop: "40px" }}>
 
-      <h2>Market Ranking</h2>
+      <h2 style={{ marginBottom: "16px" }}>
+        Market Ranking
+      </h2>
 
-      <div style={{ marginBottom: "10px" }}>
-
-        <button onClick={() => setSortKey("market_cap")}>
-          Market Cap
-        </button>
-
-        <button onClick={() => setSortKey("price_change_percentage_24h")}>
-          24h Change
-        </button>
-
-        <button onClick={() => setSortKey("total_volume")}>
-          Volume
-        </button>
-
-      </div>
-
-      <table style={{ width: "100%" }}>
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+          fontSize: "14px"
+        }}
+      >
 
         <thead>
-          <tr>
+
+          <tr
+            style={{
+              textAlign: "left",
+              borderBottom: "1px solid #ddd"
+            }}
+          >
+
             <th>#</th>
+
             <th>Coin</th>
+
             <th>Price</th>
-            <th>24h</th>
-            <th>Market Cap</th>
+
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                handleSort(
+                  "price_change_percentage_24h"
+                )
+              }
+            >
+              24h {arrow("price_change_percentage_24h")}
+            </th>
+
+            <th
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                handleSort("market_cap")
+              }
+            >
+              Market Cap {arrow("market_cap")}
+            </th>
+
           </tr>
+
         </thead>
 
         <tbody>
@@ -71,20 +118,48 @@ export default function RankingTable() {
               c.price_change_percentage_24h
 
             const color =
-              change >= 0 ? "#22c55e" : "#ef4444"
+              change >= 0
+                ? "#16a34a"
+                : "#dc2626"
 
             return (
 
-              <tr key={c.id}>
+              <tr
+                key={c.id}
+                style={{
+                  borderBottom: "1px solid #f1f1f1"
+                }}
+              >
 
                 <td>{i + 1}</td>
 
                 <td>
-                  {c.symbol.toUpperCase()}
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px"
+                    }}
+                  >
+
+                    <img
+                      src={c.image}
+                      width={20}
+                      height={20}
+                    />
+
+                    <strong>
+                      {c.symbol.toUpperCase()}
+                    </strong>
+
+                  </div>
+
                 </td>
 
                 <td>
-                  ${c.current_price.toLocaleString()}
+                  $
+                  {c.current_price.toLocaleString()}
                 </td>
 
                 <td style={{ color }}>
@@ -92,7 +167,8 @@ export default function RankingTable() {
                 </td>
 
                 <td>
-                  ${c.market_cap.toLocaleString()}
+                  $
+                  {c.market_cap.toLocaleString()}
                 </td>
 
               </tr>
@@ -106,5 +182,7 @@ export default function RankingTable() {
       </table>
 
     </div>
+
   )
+
 }
