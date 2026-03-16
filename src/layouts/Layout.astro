@@ -1,3 +1,9 @@
+---
+import MarketTicker from "../components/MarketTicker.tsx";
+import { getLatestCryptos } from "../lib/coinmarketcap";
+
+const cryptos = await getLatestCryptos(50);
+---
 <!doctype html>
 <html lang="en">
 	<head>
@@ -9,6 +15,11 @@
 		<title>Astro Basics</title>
 	</head>
 	<body>
+		<header>
+			Market Viewr
+  	<MarketTicker cryptos={cryptos} client:load />
+		</header>
+		
 		<slot />
 	</body>
 </html>
