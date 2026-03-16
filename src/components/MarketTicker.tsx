@@ -1,11 +1,61 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { getCryptoLogo } from "../lib/coinmarketcap";
 
-export default function MarketTicker({cryptos}: {cryptos: any[]}) {
+export default function MarketTicker({ cryptos }: { cryptos: any[] }) {
 
-  //const { cryptos } = await getLatestCryptos(50);
   const trackRef = useRef<HTMLDivElement>(null);
   const paused = useRef(false);
+
+  const price = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  const percent = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  // 🔹 Pre-renderizamos los coins UNA sola vez
+  const coins = useMemo(() => {
+
+    return cryptos.map((c: any) => {
+
+      const change = c.quote?.USD?.percent_change_24h ?? 0;
+      const color = change >= 0 ? "#16a34a" : "#dc2626";
+      const logo = getCryptoLogo(c.id);
+
+      return (
+        <div
+          key={c.slug}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            flex: "0 0 auto",
+            fontSize: "14px"
+          }}
+        >
+          <img
+            src={logo}
+            width={18}
+            height={18}
+            style={{ borderRadius: "50%" }}
+          />
+
+          <strong>{c.symbol?.toUpperCase() ?? "?"}</strong>
+
+          ${price.format(c.quote?.USD?.price ?? 0)}
+
+          <span style={{ color }}>
+            {percent.format(change)}%
+          </span>
+        </div>
+      );
+
+    });
+
+  }, [cryptos]);
 
   useEffect(() => {
 
@@ -16,7 +66,8 @@ export default function MarketTicker({cryptos}: {cryptos: any[]}) {
     let frame: number;
 
     const speed = 0.35;
-    const width = el.scrollWidth - el.clientWidth
+
+    const width = el.scrollWidth / 2;
 
     const step = () => {
 
@@ -25,7 +76,7 @@ export default function MarketTicker({cryptos}: {cryptos: any[]}) {
       }
 
       if (Math.abs(pos) >= width) {
-        pos += width;
+        pos = 0;
       }
 
       el.style.transform = `translate3d(${pos}px,0,0)`;
@@ -41,48 +92,6 @@ export default function MarketTicker({cryptos}: {cryptos: any[]}) {
   }, [cryptos]);
 
   if (!cryptos.length) return null;
-
-  const price = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-
-  const percent = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-
-  const renderCoins = () =>
-    cryptos.map((c: any) => {
-
-      const change = c.quote.USD.percent_change_24h ?? 0;
-      const color = change >= 0 ? "#16a34a" : "#dc2626";
-      
-      const logo = getCryptoLogo(c.id);
-
-      return (
-        <div
-          key={c.slug}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            flex: "0 0 auto",
-            fontSize: "14px"
-          }}
-        >
-          <img src={logo} width={18} height={18} style={{borderRadius:"50%"}} />
-
-          <strong>{c.symbol?.toUpperCase() ?? "?"}</strong>
-
-          ${price.format(c.quote.USD.price)}
-
-          <span style={{ color }}>
-            {percent.format(change)}%
-          </span>
-        </div>
-      );
-    });
 
   return (
 
@@ -116,8 +125,8 @@ export default function MarketTicker({cryptos}: {cryptos: any[]}) {
           }}
         >
 
-          {renderCoins()}
-          {renderCoins()}
+          {coins}
+          {coins}
 
         </div>
 
